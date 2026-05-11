@@ -1,6 +1,6 @@
 # DjangoApplication — Password Generator
 
-Учебный проект в рамках курса Академия ТОП. Первое знакомство с фреймворком Django.
+Учебный проект Академия ТОП. Мое первое знакомство с фреймворком Django.
 
 ---
 
@@ -40,16 +40,7 @@
 | `python.exe .\manage.py migrate` | Применение миграций к базе данных |
 | `python.exe .\manage.py runserver` | Запуск сервера разработки на http://127.0.0.1:8000 |
 
-Для остановки сервера используйте **Ctrl + C** в терминале.
+Для остановки сервера **Ctrl + C**
 
 ---
 
-### Типичный порядок действий
-
-1. Создание проекта: `django-admin startproject <имя> .`
-2. Создание приложения: `python manage.py startapp <имя>`
-3. Регистрация приложения в `INSTALLED_APPS` (файл `settings.py`)
-4. Описание моделей в `models.py`
-5. Генерация миграций: `python manage.py makemigrations`
-6. Применение миграций: `python manage.py migrate`
-7. Запуск сервера: `python manage.py runserver`
