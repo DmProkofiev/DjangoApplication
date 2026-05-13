@@ -55,6 +55,7 @@
 INSTALLED_APPS - Список всех приложений (модулей), которые загружает Django.  
 На основе этого списка фреймворк определяет, какие модели, шаблоны, статические файлы и команды должны быть доступны.
 
+```
 INSTALLED_APPS = [
     'django.contrib.admin',        # Административная панель (/admin)
     'django.contrib.auth',         # Аутентификация: пользователи, группы, права
@@ -63,11 +64,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',     # Всплывающие уведомления ("Пароль изменён")
     'django.contrib.staticfiles',  # Статические файлы: CSS, JS, изображения
 ]
+```
 
 MIDDLEWARE - слои обработки запросов
 Промежуточное программное обеспечение (middleware) — это слои, через которые последовательно проходят каждый HTTP-запрос (от браузера) и каждый HTTP-ответ (от сервера).
 Порядок следования middleware важен: они выполняются сверху вниз для запроса и в обратном порядке для ответа.
 
+```
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',               # HTTPS, HSTS, защита заголовков
     'django.contrib.sessions.middleware.SessionMiddleware',        # Привязка сессии через cookies
@@ -77,6 +80,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',        # Поддержка сообщений (messages.success)
     'django.middleware.clickjacking.XFrameOptionsMiddleware',      # Защита от встраивания в iframe
 ]    
+```
 
 ---
 
