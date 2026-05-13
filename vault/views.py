@@ -1,3 +1,9 @@
 from django.shortcuts import render
 
-# Create your views here.
+# Обработчик  обрабатывает запрос и возвращает ответ
+def home(request):
+    return render(request, "vault/home.html")
+
+
+def views():
+    return None

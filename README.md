@@ -48,5 +48,31 @@
 
 Для остановки сервера **Ctrl + C**
 
+### Технические сведения
+
+# список всех приложений (модулей), которые активны
+# Django использует этот список, чтобы знать, какие модели, шаблоны, статические файлы и команды нужно загрузить.
+INSTALLED_APPS = [
+    'django.contrib.admin', # Административная панель (сайт /admin)
+    'django.contrib.auth', # Система аутентификации: пользователи, группы, права, пароли
+    'django.contrib.contenttypes', # Фреймворк для "привязки" моделей друг к другу (нужен для auth и admin)
+    'django.contrib.sessions', # Управление сессиями (сохраняет состояние пользователя между запросами)
+    'django.contrib.messages', # Однострочные всплывающие сообщения ("Пароль изменён", "Статья сохранена")
+    'django.contrib.staticfiles', # Обработка статических файлов: CSS, JS, изображения
+]
+
+# промежуточное программное обеспечение — это "слои" обработки,
+# через которые проходит каждый HTTP-запрос от браузера и HTTP-ответ от сервера
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware', # Безопасность: HTTPS-редиректы, заголовки HSTS, XSS-защита
+    'django.contrib.sessions.middleware.SessionMiddleware', # Привязывает сессию к каждому запросу (через cookies)
+    'django.middleware.common.CommonMiddleware', # Перенаправления с www и без, обработка PREPEND_WWW, APPEND_SLASH
+    'django.middleware.csrf.CsrfViewMiddleware', # Защита от CSRF-атак (подделка межсайтовых запросов) — важен для форм и POST-запросов
+    'django.contrib.auth.middleware.AuthenticationMiddleware', # Привязывает текущего пользователя к запросу (request.user)
+    'django.contrib.messages.middleware.MessageMiddleware', # Поддерживает систему однострочных сообщений (messages.success(request, "..."))
+    'django.middleware.clickjacking.XFrameOptionsMiddleware', # Защита от clickjacking (встраивания вашего сайта в iframe злоумышленником)
+]
+
+
 ---
 
