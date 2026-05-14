@@ -1,8 +1,6 @@
-from datetime import timezone
-
 from django.db import models
-from django_password_generator import settings
-
+from django.conf import settings
+from django.utils import timezone
 
 class Account(models.Model):
     owner = models.ForeignKey(

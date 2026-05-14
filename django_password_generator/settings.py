@@ -20,7 +20,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-$gyrj@=j3ozd1qefxw-@j5efiw#-x0b@_1$di*!^tg=yv00cte' #код безопасности
+# код безопасности
+SECRET_KEY = 'django-insecure-$gyrj@=j3ozd1qefxw-@j5efiw#-x0b@_1$di*!^tg=yv00cte'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -31,24 +32,24 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin', # Административная панель (сайт /admin)
-    'django.contrib.auth', # Система аутентификации: пользователи, группы, права, пароли
-    'django.contrib.contenttypes', # Фреймворк для "привязки" моделей друг к другу (нужен для auth и admin)
-    'django.contrib.sessions', # Управление сессиями (сохраняет состояние пользователя между запросами)
-    'django.contrib.messages', # Однострочные всплывающие сообщения ("Пароль изменён", "Статья сохранена")
-    'django.contrib.staticfiles', # Обработка статических файлов: CSS, JS, изображения
+    'django.contrib.admin',         # Административная панель (сайт /admin)
+    'django.contrib.auth',          # Система аутентификации: пользователи, группы, права, пароли
+    'django.contrib.contenttypes',  # Фреймворк для "привязки" моделей друг к другу (нужен для auth и admin)
+    'django.contrib.sessions',      # Управление сессиями (сохраняет состояние пользователя между запросами)
+    'django.contrib.messages',      # Однострочные всплывающие сообщения ("Пароль изменён", "Статья сохранена")
+    'django.contrib.staticfiles',   # Обработка статических файлов: CSS, JS, изображения
+    'vault'
 ]
-# список всех приложений (модулей), которые активны
-# Django использует этот список, чтобы знать, какие модели, шаблоны, статические файлы и команды нужно загрузить.
+
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware', # Безопасность: HTTPS-редиректы, заголовки HSTS, XSS-защита
-    'django.contrib.sessions.middleware.SessionMiddleware', # Привязывает сессию к каждому запросу (через cookies)
-    'django.middleware.common.CommonMiddleware', # Перенаправления с www и без, обработка PREPEND_WWW, APPEND_SLASH
-    'django.middleware.csrf.CsrfViewMiddleware', # Защита от CSRF-атак (подделка межсайтовых запросов) — важен для форм и POST-запросов
-    'django.contrib.auth.middleware.AuthenticationMiddleware', # Привязывает текущего пользователя к запросу (request.user)
-    'django.contrib.messages.middleware.MessageMiddleware', # 	Поддерживает систему однострочных сообщений (messages.success(request, "..."))
-    'django.middleware.clickjacking.XFrameOptionsMiddleware', # Защита от clickjacking (встраивания вашего сайта в iframe злоумышленником)
+    'django.middleware.security.SecurityMiddleware',            # Безопасность: HTTPS-редиректы, заголовки HSTS, XSS-защита
+    'django.contrib.sessions.middleware.SessionMiddleware',     # Привязывает сессию к каждому запросу (через cookies)
+    'django.middleware.common.CommonMiddleware',                # Перенаправления с www и без, обработка PREPEND_WWW, APPEND_SLASH
+    'django.middleware.csrf.CsrfViewMiddleware',                # Защита от CSRF-атак (подделка межсайтовых запросов) — важен для форм и POST-запросов
+    'django.contrib.auth.middleware.AuthenticationMiddleware',  # Привязывает текущего пользователя к запросу (request.user)
+    'django.contrib.messages.middleware.MessageMiddleware',     # Поддерживает систему однострочных сообщений (messages.success(request, "..."))
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',   # Защита от clickjacking (встраивания вашего сайта в iframe злоумышленником)
 ]
 # промежуточное программное обеспечение — это "слои" обработки,
 # через которые проходит каждый HTTP-запрос от браузера и HTTP-ответ от сервера
@@ -69,6 +70,22 @@ TEMPLATES = [
         },
     },
 ]
+
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'handlers': {
+#         'console': {
+#             'class': 'logging.StreamHandler',
+#         },
+#     },
+#     'loggers': {
+#         'django.server': {
+#             'handlers': ['console'],
+#             'level': 'INFO',
+#         },
+#     },
+# }
 
 WSGI_APPLICATION = 'django_password_generator.wsgi.application'
 
@@ -113,6 +130,7 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+LOGGING_CONFIG = None
 
 
 # Static files (CSS, JavaScript, Images)
