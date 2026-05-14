@@ -80,5 +80,25 @@ MIDDLEWARE = [
 ]    
 ```
 
+`TEMPLATES` - это настройка того, как Django загружает и обрабатывает HTML-шаблоны.       
+Она определяет движок шаблонов, пути поиска файлов и набор функций (context_processors),         
+которые автоматически добавляют данные (например, пользователя или запрос) в каждый шаблон.     
+
+```
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',  # Движок (почти всегда стандартный)
+        'DIRS': [],                                                    # Дополнительные папки с шаблонами (вне приложений)
+        'APP_DIRS': True,                                              # Искать шаблоны в папке templates/ каждого приложения
+        'OPTIONS': {
+            'context_processors': [                                    # Функции, которые добавляют общие переменные во все шаблоны
+                'django.template.context_processors.request',          # Переменная {{ request }}
+                'django.contrib.auth.context_processors.auth',         # Переменная {{ user }}
+                'django.contrib.messages.context_processors.messages', # {{ messages }}
+            ],
+        },
+    },
+]
+```
 ---
 
