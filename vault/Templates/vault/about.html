@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>О Neon Password Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: radial-gradient(circle at 30% 20%, #0a0c1a, #010105);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Courier New', 'Inter', monospace;
+            padding: 20px;
+        }
+
+        @keyframes rgbBorder {
+            0% { border-color: #ff2a6d; box-shadow: 0 0 8px #ff2a6d, 0 0 20px #ff2a6d; }
+            33% { border-color: #05d9e8; box-shadow: 0 0 12px #05d9e8, 0 0 28px #05d9e8; }
+            66% { border-color: #01c38e; box-shadow: 0 0 10px #01c38e, 0 0 24px #01c38e; }
+            100% { border-color: #ff2a6d; box-shadow: 0 0 8px #ff2a6d, 0 0 20px #ff2a6d; }
+        }
+
+        .about-card {
+            background: rgba(10, 15, 30, 0.85);
+            backdrop-filter: blur(12px);
+            border-radius: 48px;
+            padding: 2rem 2rem 2rem;
+            width: 100%;
+            max-width: 700px;
+            border: 2.5px solid #ff2a6d;
+            animation: rgbBorder 3s infinite ease;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, #ff2a6d, #05d9e8, #01c38e);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 1.5rem;
+        }
+
+        .content {
+            color: #ccddee;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            text-align: left;
+            margin: 1.5rem 0;
+        }
+
+        .content p {
+            margin: 1rem 0;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 10px 24px;
+            background: linear-gradient(90deg, #ff2a6d, #ff6a3d);
+            border-radius: 60px;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .back-link:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 16px #ff2a6d;
+        }
+
+        footer {
+            margin-top: 2rem;
+            font-size: 0.7rem;
+            color: #3f6f7a;
+        }
+    </style>
+</head>
+<body>
+<div class="about-card">
+    <h1>О ПРОЕКТЕ</h1>
+    <div class="content">
+        <p><strong>Neon Password Generator</strong> – учебный проект, созданный с использованием Django 6.0.5. Боевая задача – научится, как работают статические файлы, шаблоны, и маршрутизация во фреймворке Django.</p>
+        <p>Вдохновлён неоновой эстетикой RGB. Генератор паролей использует JavaScript на клиентской стороне для демонстрации, но в будущем планируется интеграция с моделью Account и сохранение паролей в базе данных.</p>
+    </div>
+    <a href="{% url 'home' %}" class="back-link">← На главную</a>
+    <div class="strength-info">Разработчик Прокофьев Дмитрий Леонидович</div>
+    <footer>NEON Django</footer>
+</div>
+</body>
+</html>

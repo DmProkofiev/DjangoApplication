@@ -182,7 +182,9 @@
 </head>
 <body>
 <div class="generator-card">
+    <a href="{% url 'about' %}" style="text-decoration: none;">
     <h1>Neon PASSWORD GENERATOR</h1>
+    </a>
 
     <div class="password-area">
         <div class="password-placeholder">Ваш пароль</div>
@@ -217,7 +219,11 @@
     </div>
 
     <button>Создать</button>
+
+    <a href="{% url 'contact' %}" style="text-decoration: none;">
     <div class="strength-info">Разработчик Прокофьев Дмитрий Леонидович</div>
+    </a>
+
     <footer>NEON Django</footer>
 </div>
 </body>
