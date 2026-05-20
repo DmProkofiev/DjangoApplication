@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from urllib3 import request
 
+from vault.forms import RegisterForm
+
 
 # Обработчик  обрабатывает запрос и возвращает ответ
 def home(request):
@@ -18,5 +20,7 @@ def help(request):
 def users(request):
     return render(request, 'vault/user.html')
 
-# def views():
-#     return None
+def register_view(request):
+    form=RegisterForm()
+    context = {"form": form}
+    return render(request, 'vault/register.html', context=context)

@@ -1,10 +1,13 @@
 from django.db import models
 from django.conf import settings
 from django.utils import timezone
+from django.contrib.auth import get_user_model
 
+USER = get_user_model()
 class Account(models.Model):
     owner = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
+        # settings.AUTH_USER_MODEL,
+        USER,
         on_delete = models.CASCADE,
         related_name='accounts',
         verbose_name="Владелец"
