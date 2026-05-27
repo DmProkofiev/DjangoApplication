@@ -6,7 +6,7 @@
 {# общие ошибки формы (не относятся к конкретному полю) #}
 
 {% if form.non_field_errors %}
-<div class="errors">{{ form.no_field_errors }}</div>
+<div class="errors">{{ form.non_field_errors }}</div>
 {% endif %}
 
 <form method = "post">
@@ -19,10 +19,10 @@
         {% endif %}
     </p>
     <p>
-        <label for="{{ form.password.id_for_label }}">Пароль</label>
-        {{ form.password }}
-        {% if form.password.errors %}
-            <div class="errors">{{ form.password.errors }}</div>
+        <label for="{{ form.password1.id_for_label }}">Пароль</label>
+        {{ form.password1 }}
+        {% if form.password1.errors %}
+            <div class="errors">{{ form.password1.errors }}</div>
         {% endif %}
     </p>
         <p>
