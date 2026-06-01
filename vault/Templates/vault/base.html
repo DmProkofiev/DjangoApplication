@@ -1,9 +1,10 @@
-<!--{# Базовый шаблон от которого наследуются все страницы приложения #}-->
+{% load_static %}
 <!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>{% block title %} {% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" >
 </head>
 <body>
     {% block content %} {% endblock %}

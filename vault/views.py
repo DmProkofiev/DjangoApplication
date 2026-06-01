@@ -1,7 +1,9 @@
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from vault.forms import RegisterForm
+from .models import Account
+
 # `View (представление) `— это функция (или класс),
 # которая решает, что увидит пользователь, когда перейдёт по определённому адресу на вашем сайте.
 # render() — это функция-помощник (shortcut) из django.shortcuts,
@@ -61,6 +63,17 @@ def login_view(request):
 
     return render(request, "vault/login.html", context={"error": error})
 
+def account_list_view(request):
+    """
+    страница со списком учетных записей
+    """
+    accounts = Account.objects.filter(owner=request.user)
+    context = {"account": accounts}
+    return render(request, template_name="vault/account_list.html", context=context)
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')
 
 
 
