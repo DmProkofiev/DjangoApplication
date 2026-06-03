@@ -1,2 +1,10 @@
+<!--{% extends 'vault/base.html' %}-->
+<!--<img src="{% static 'img/image.jpg' %}" width="200px" height="200px">-->
+
 {% extends 'vault/base.html' %}
-<img src="{% static 'img/image.jpg' %}" width="200px" height="200px">
+{% load static %}
+
+{% block content %}
+    <img src="{% static 'img/image.jpg' %}" width="200px" height="200px">
+{% endblock %}
+

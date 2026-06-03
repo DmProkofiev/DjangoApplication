@@ -1,12 +1,16 @@
-{% load_static %}
-<!doctype html>
-<html lang="en">
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %} {% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}" >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>{% block title %}Neon Password Generator{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block extra_css %}{% endblock %}
 </head>
 <body>
-    {% block content %} {% endblock %}
+    {% block content %}{% endblock %}
+    {% block extra_js %}{% endblock %}
 </body>
 </html>

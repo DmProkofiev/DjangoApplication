@@ -1,7 +1,12 @@
+import secrets
+import string
+
 from django.contrib.auth import login, authenticate, logout
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from vault.forms import RegisterForm
+from django.template.defaultfilters import length
+
+from vault.forms import RegisterForm, AccountForm
 from .models import Account
 
 # `View (представление) `— это функция (или класс),
@@ -10,8 +15,59 @@ from .models import Account
 # которая загружает HTML-шаблон,
 # подставляет в него данные из контекста и возвращает объект HttpResponse (готовую HTML-страницу).,
 # которая объединяет шаблон (HTML) и контекст (данные), а затем возвращает готовую HTML-страницу.
-
 # Обработчик  обрабатывает запрос и возвращает ответ
+
+#----Генерация паролей----!
+def generate_password(length=16, use_digits=True, use_special=True):
+# базовый алфовит-буквы в обоих регистрах(A-Z, a-z)
+    alphabet=string.ascii_letters
+    if use_digits:
+        alphabet+=string.digits
+    if use_special:
+        alphabet+= "!@#$%^&*-_=+"
+    return ''.join(secrets.choice(alphabet) for i in range(length))
+
+def _password_option(request):
+    """
+    Считывает из GET параметров сложности
+    и при необходиомсти генерирует пароль.
+    Возвращаемый словарь полей:
+        -gen_length: текущая длина (для подстановки в input)
+        -gen_digits: включены ли цифры (для чекбокса)
+        -gen_special: включены ли спецсимволы (для чекбокса)
+        -generated_password: сгенерирован пароль или None
+    Пароль создается: только если в GET явно есть generate=1
+    (нажата кнопка Сгенерировать)
+    """
+    is_generate = request.GET.get('generate')=='1'
+    #Длина пароля
+    try:
+        length=int(request.GET.get('length', '16'))
+    except (TypeError, ValueError):
+        length = 16
+
+    # ограничиваем разумным диапазоном: чтобы не сломать форму
+    length = max(4, min(length, 128))
+    if is_generate:
+        use_digits=request.GET.get('digits')=='on'
+        use_special=request.GET.get('special')=='on'
+        password=generate_password(
+            length=length,
+            use_digits=use_digits,
+            use_special=use_special
+        )
+    else:
+        use_digits = True
+        use_special = True
+        password=None
+
+    return {
+        "gen_length": length,
+        "gen_digits": use_digits,
+        "gen_special": use_special,
+        "generated_password": password
+    }
+
 def home(request):
     return render(request, 'vault/home.html')
 
@@ -74,6 +130,30 @@ def account_list_view(request):
 def logout_view(request):
     logout(request)
     return redirect('login')
+
+def account_create_view(request):
+    """
+    Добавление новой учетной записи
+    """
+    if request.method=="POST":
+        form=AccountForm(request.POST)
+        if form.is_valid():
+            # coomit = False - создаем обьект, но пока не сохраняем в БД
+            account=form.save()
+            # привязываем УЗ к текущему пользавателю
+            account.owner=request.user
+            account.save()
+            return redirect('account_list')
+        opts = _password_option(request)
+    else:
+        opts = _password_option(request)
+        initial = {}
+        if opts['generated_password']:
+            initial['password']=opts['generated_password']
+        form = AccountForm(initial=initial)
+
+    context = {"form": form}
+    return render(request, template_name="vault/account_form.html", context=context)
 
 
 
