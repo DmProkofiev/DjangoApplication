@@ -1,9 +1,10 @@
 import secrets
 import string
+from lib2to3.fixes.fix_input import context
 
 from django.contrib.auth import login, authenticate, logout
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.template.defaultfilters import length
 
 from vault.forms import RegisterForm, AccountForm
@@ -155,5 +156,35 @@ def account_create_view(request):
     context = {"form": form}
     return render(request, template_name="vault/account_form.html", context=context)
 
+def account_detail_view(request, pk):
+    account = Account.objects.filter(pk=pk)
+    context = {"account": account}
+    return render(request, template_name="vault/account_detail.html")
+
+def account_edit_view(request, pk):
+    account = get_object_or_404(Account, pk=pk, owner=request.user)
+    if request.method == "POST":
+        form = AccountForm(request.POST, instance=account)
+        if form.is_valid():
+            form.save()
+            return redirect("account_detail", pk=account.pk)
+        opts = _password_option(request)
+    else:
+        opts = _password_option(request)
+        if opts["generated_password"]:
+            form = AccountForm(
+                instance=account,
+                initial={"password": opts["generated_password"]}
+            )
+        else:
+            opts = _password_option(request)
+            if opts["generated_password"]:
+                form = AccountForm(
+                    instance=account,
+                    initial={"password": opts["generated_password"]}
+                )
+            else:
+                form=AccountForm(instance=account)
+    return render(request, template_name: "vault/account_form.html", context:{"form": form, **opts})
 
 

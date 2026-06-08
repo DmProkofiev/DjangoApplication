@@ -21,7 +21,7 @@
             <tbody>
                 {% for account in accounts %}
                     <tr>
-                        <td>{{ account.site }}</td>
+                        <td><a href="{% url 'account_detail' pk=account.pk %}">{{ account.site }}</a></td>
                         <td>{{ account.login }}</td>
                         <td>{{ account.password }}</td>
                         <td>{{ account.created_at }}</td>
