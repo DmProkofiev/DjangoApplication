@@ -1,24 +1,13 @@
 import secrets
 import string
-from lib2to3.fixes.fix_input import context
-
 from django.contrib.auth import login, authenticate, logout
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template.defaultfilters import length
-
 from vault.forms import RegisterForm, AccountForm
 from .models import Account
 
-# `View (представление) `— это функция (или класс),
-# которая решает, что увидит пользователь, когда перейдёт по определённому адресу на вашем сайте.
-# render() — это функция-помощник (shortcut) из django.shortcuts,
-# которая загружает HTML-шаблон,
-# подставляет в него данные из контекста и возвращает объект HttpResponse (готовую HTML-страницу).,
-# которая объединяет шаблон (HTML) и контекст (данные), а затем возвращает готовую HTML-страницу.
-# Обработчик  обрабатывает запрос и возвращает ответ
-
-#----Генерация паролей----!
+# Генерация паролей
 def generate_password(length=16, use_digits=True, use_special=True):
 # базовый алфовит-буквы в обоих регистрах(A-Z, a-z)
     alphabet=string.ascii_letters
@@ -69,6 +58,7 @@ def _password_option(request):
         "generated_password": password
     }
 
+# Статика
 def home(request):
     return render(request, 'vault/home.html')
 
@@ -84,11 +74,6 @@ def help(request):
 def users(request):
     return render(request, 'vault/user.html')
 
-# def register_view(request):
-#     form=RegisterForm()
-#     context = {"form": form}
-#     return render(request, 'vault/register.html', context=context)
-
 def register_view(request) -> HttpResponse:
     if request.method == "POST":
         form = RegisterForm(request.POST)
@@ -102,7 +87,7 @@ def register_view(request) -> HttpResponse:
     context = {"form": form}
     return render(request, "vault/register.html", context)
 
-
+# Обработка валидации
 def login_view(request):
     error = None
 
@@ -117,7 +102,6 @@ def login_view(request):
             return redirect("/")
         else:
             error = "Неверный логин или пароль"
-
     return render(request, "vault/login.html", context={"error": error})
 
 def account_list_view(request):
@@ -185,6 +169,6 @@ def account_edit_view(request, pk):
                 )
             else:
                 form=AccountForm(instance=account)
-    return render(request, template_name: "vault/account_form.html", context:{"form": form, **opts})
+    return render(request,"vault/account_form.html",{"form": form, **opts})
 
 

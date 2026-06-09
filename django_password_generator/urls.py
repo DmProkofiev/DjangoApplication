@@ -18,6 +18,7 @@ from vault.views import account_list_view, logout_view, account_create_view
 #     path('logout/', views.logout_view, name="logout"), #новое!
 #     path('account/new/', views.account_create_view, name="account_create")
 # ]
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='home'),
@@ -31,5 +32,4 @@ urlpatterns = [
     path('accounts/new/', views.account_create_view, name="account_create"),
     path('accounts/', views.account_list_view, name="account_list"),
     path('accounts/<int:pk>/', views.account_detail_view, name="account_detail"),
-    path('')
 ]
