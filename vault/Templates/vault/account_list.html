@@ -1,36 +1,67 @@
 {% extends 'vault/base.html' %}
-{% block title %}Мои учетные записи{% endblock title %}
+{% load static %}
+
+{% block title %} Мои учетные записи {% endblock %}
 
 {% block content %}
-    <h1>Мои учетные записи</h1>
+<div class="accounts-card">
+    <h1> Мои учетные записи </h1>
+
     <p>
-        <a class="btn" href="">Добавить запись</a>
+        <a class="btn" href="{% url 'account_create' %}"> Добавить запись</a>
     </p>
 
     {% if accounts %}
-        <table>
-            <thead>
-                <tr>
-                    <th>Сайт</th>
-                    <th>Логин</th>
-                    <th>Пароль</th>
-                    <th>Дата создания</th>
-                    <th>Дата изменения пароля</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for account in accounts %}
+        <div class="table-container">
+            <table class="accounts-table">
+                <thead>
                     <tr>
-                        <td><a href="{% url 'account_detail' pk=account.pk %}">{{ account.site }}</a></td>
-                        <td>{{ account.login }}</td>
-                        <td>{{ account.password }}</td>
-                        <td>{{ account.created_at }}</td>
-                        <td>{{ account.password_change_at }}</td>
+                        <th>Сайт</th>
+                        <th>Логин</th>
+                        <th>Пароль</th>
+                        <th>Дата создания</th>
+                        <th>Дата изменения пароля</th>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {% for account in accounts %}
+                        <tr>
+                            <td><a href="{% url 'account_detail' pk=account.pk %}">{{ account.site }}</a></td>
+                            <td>{{ account.login }}</td>
+                            <td> {{ account.password }} </td>
+                            <td>{{ account.created_at|date:"d.m.Y H:i" }}</td>
+                            <td>{{ account.password_change_at|date:"d.m.Y H:i"|default:"не изменялся" }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <span class="total-count">Всего записей: {{ accounts.paginator.count }}</span>
+
+        {% if accounts.has_other_pages %}
+            <div class="pagination">
+                {% if accounts.has_previous %}
+                    <a href="?page=1">&laquo; Первая</a>
+                    <a href="?page={{ accounts.previous_page_number }}">Назад</a>
+                {% endif %}
+
+                <span class="current-page">
+                    Страница {{ accounts.number }} из {{ accounts.paginator.num_pages }}
+                </span>
+
+                {% if accounts.has_next %}
+                    <a href="?page={{ accounts.next_page_number }}">Вперёд</a>
+                    <a href="?page={{ accounts.paginator.num_pages }}">Последняя &raquo;</a>
+                {% endif %}
+            </div>
+        {% endif %}
+
     {% else %}
-        <p class="muted">Учетная запись отсутствует</p>
+        <p class="empty-message">У вас пока нет сохранённых паролей</p>
+        <a href="{% url 'account_create' %}" class="btn">Создать первую запись</a>
     {% endif %}
-{% endblock content %}
+
+    <footer>NEON Django</footer>
+</div>
+{% endblock %}

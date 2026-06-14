@@ -4,9 +4,8 @@
 {% block title %}Пользователи{% endblock %}
 
 {% block content %}
-<div class="users-card">
-    <h1>Пользователи</h1>
-    
+<h1>Пользователи</h1>
+
     <div class="content">
         <p><strong>Neon Password Generator</strong></p>
         <p>Список зарегистрированных пользователей</p>
@@ -41,8 +40,5 @@
         </div>
     {% endif %}
 
-    <a href="{% url 'home' %}" class="back-link">← На главную</a>
-    <div class="strength-info">Разработчик: Прокофьев Дмитрий Леонидович</div>
     <footer>NEON Django</footer>
-</div>
 {% endblock %}

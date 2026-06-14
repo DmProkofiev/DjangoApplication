@@ -4,49 +4,48 @@
 {% block title %}Neon Password Generator{% endblock %}
 
 {% block content %}
-<div class="generator-card">
+
     <a href="{% url 'about' %}" class="title-link">
         <h1>Neon PASSWORD GENERATOR</h1>
     </a>
 
     <div class="password-area">
-        <div class="password-placeholder">Ваш пароль</div>
+        {% if generated_password %}
+            <div>{{ generated_password }}</div>
+        {% else %}
+            <div class="password-placeholder">Ваш пароль</div>
+        {% endif %}
     </div>
 
-    <div class="settings-panel">
-        <div class="param-row">
-            <div class="param">
-                <label>ДЛИНА</label>
-                <input type="number" value="16" min="6" max="64">
+    <form method="post">
+        {% csrf_token %}
+        <div class="settings-panel">
+            <div class="param-row">
+                <div class="param">
+                    <label>ДЛИНА</label>
+                    <input type="number" name="length" value="{{ gen_length|default:16 }}" min="6" max="64">
+                </div>
             </div>
-            <div class="param">
-                <label>КОЛИЧЕСТВО</label>
-                <input type="number" value="1" min="1" max="8">
+
+            <div class="checkbox-group">
+                <label>
+                    <input type="checkbox" name="uppercase" {% if gen_uppercase != False %}checked{% endif %}> A-Z
+                </label>
+                <label>
+                    <input type="checkbox" name="lowercase" {% if gen_lowercase != False %}checked{% endif %}> a-z
+                </label>
+                <label>
+                    <input type="checkbox" name="digits" {% if gen_digits != False %}checked{% endif %}> 0-9
+                </label>
+                <label>
+                    <input type="checkbox" name="special" {% if gen_special != False %}checked{% endif %}> !@#$%^&*
+                </label>
             </div>
         </div>
 
-        <div class="checkbox-group">
-            <label>
-                <input type="checkbox" checked> A-Z
-            </label>
-            <label>
-                <input type="checkbox" checked> a-z
-            </label>
-            <label>
-                <input type="checkbox" checked> 0-9
-            </label>
-            <label>
-                <input type="checkbox" checked> !@#$%^&*
-            </label>
-        </div>
-    </div>
+        <button type="submit" name="generate" value="1" class="btn">Создать</button>
+    </form>
 
-    <button>Создать</button>
 
-    <a href="{% url 'contact' %}" class="developer-link">
-        <div class="strength-info">Разработчик: Прокофьев Дмитрий Леонидович</div>
-    </a>
 
-    <footer>NEON Django</footer>
-</div>
 {% endblock %}

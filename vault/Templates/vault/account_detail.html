@@ -1,5 +1,5 @@
 {% extends 'vault/base.html' %}
-{% block title %}{{account.site}} - учетная запись{% endblock title %}
+{% block title %}{{account.site}}  учетная запись{% endblock title %}
 
 {% block content %}
     <h1>Учетная запись</h1>
@@ -12,7 +12,6 @@
     </table>
     <p style="margin-top: 16px;">
         <a class="btn btn-secondary" href="{% url 'account_list' %}">К списку</a>
-        <a class="btn" href="{% url 'account_edit' account.pk %}">Изменить</a>
         <a class="btn btn-danger" href="">Удалить</a>
     </p>
 

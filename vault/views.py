@@ -6,8 +6,31 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.template.defaultfilters import length
 from vault.forms import RegisterForm, AccountForm
 from .models import Account
+from django.core.paginator import Paginator
 
 # Генерация паролей
+def home_view(request):
+    context = {}
+    if request.method == 'POST' and request.POST.get('generate'):
+        length = int(request.POST.get('length', 16))
+        use_uppercase = request.POST.get('uppercase') == 'on'
+        use_lowercase = request.POST.get('lowercase') == 'on'
+        use_digits = request.POST.get('digits') == 'on'
+        use_special = request.POST.get('special') == 'on'
+
+        password = generate_password(
+            length=length,
+            use_digits=use_digits,
+            use_special=use_special
+        )
+        context['generated_password'] = password
+        context['gen_length'] = length
+        context['gen_uppercase'] = use_uppercase
+        context['gen_lowercase'] = use_lowercase
+        context['gen_digits'] = use_digits
+        context['gen_special'] = use_special
+    return render(request, 'vault/home.html', context)
+
 def generate_password(length=16, use_digits=True, use_special=True):
 # базовый алфовит-буквы в обоих регистрах(A-Z, a-z)
     alphabet=string.ascii_letters
@@ -35,7 +58,6 @@ def _password_option(request):
         length=int(request.GET.get('length', '16'))
     except (TypeError, ValueError):
         length = 16
-
     # ограничиваем разумным диапазоном: чтобы не сломать форму
     length = max(4, min(length, 128))
     if is_generate:
@@ -50,17 +72,12 @@ def _password_option(request):
         use_digits = True
         use_special = True
         password=None
-
     return {
         "gen_length": length,
         "gen_digits": use_digits,
         "gen_special": use_special,
         "generated_password": password
     }
-
-# Статика
-def home(request):
-    return render(request, 'vault/home.html')
 
 def about(request):
     return render(request, 'vault/about.html')
@@ -83,20 +100,16 @@ def register_view(request) -> HttpResponse:
             return redirect("/")
     else:
         form = RegisterForm()
-
     context = {"form": form}
     return render(request, "vault/register.html", context)
 
 # Обработка валидации
 def login_view(request):
     error = None
-
     if request.method == "POST":
         username = request.POST.get("username")
         password = request.POST.get("password")
-
         user = authenticate(request, username=username, password=password)
-
         if user is not None:
             login(request, user)
             return redirect("/")
@@ -108,9 +121,15 @@ def account_list_view(request):
     """
     страница со списком учетных записей
     """
+    if not request.user.is_authenticated:
+        return redirect('login')
+
     accounts = Account.objects.filter(owner=request.user)
-    context = {"account": accounts}
-    return render(request, template_name="vault/account_list.html", context=context)
+    paginator = Paginator(accounts, 4)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    context = {"accounts": page_obj}
+    return render(request, "vault/account_list.html", context)
 
 def logout_view(request):
     logout(request)
@@ -120,25 +139,22 @@ def account_create_view(request):
     """
     Добавление новой учетной записи
     """
-    if request.method=="POST":
-        form=AccountForm(request.POST)
+    if request.method == "POST":
+        form = AccountForm(request.POST)
         if form.is_valid():
-            # coomit = False - создаем обьект, но пока не сохраняем в БД
-            account=form.save()
-            # привязываем УЗ к текущему пользавателю
-            account.owner=request.user
+            account = form.save(commit=False)
+            account.owner = request.user
             account.save()
             return redirect('account_list')
-        opts = _password_option(request)
     else:
         opts = _password_option(request)
         initial = {}
-        if opts['generated_password']:
-            initial['password']=opts['generated_password']
+        if opts.get('generated_password'):
+            initial['password'] = opts['generated_password']
         form = AccountForm(initial=initial)
-
-    context = {"form": form}
-    return render(request, template_name="vault/account_form.html", context=context)
+        return render(request, "vault/account_form.html", {"form": form, **opts})
+    opts = _password_option(request)
+    return render(request, "vault/account_form.html", {"form": form, **opts})
 
 def account_detail_view(request, pk):
     account = Account.objects.filter(pk=pk)
@@ -171,4 +187,13 @@ def account_edit_view(request, pk):
                 form=AccountForm(instance=account)
     return render(request,"vault/account_form.html",{"form": form, **opts})
 
-
+def account_confirm_delete_view(request, pk):
+    """
+    GET - показываем страницу с подтверждением удаления
+    POST - удаляем запись и возвр на страницу
+    """
+    account = get_object_or_404(Account, pk=pk, owner=request.user)
+    if request.method == "POST":
+        account.delete()
+        return redirect('account_list')
+    return render(request, "vault/account_confirm_delete.html", {'account': account})

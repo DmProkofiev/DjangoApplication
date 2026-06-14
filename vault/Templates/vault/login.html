@@ -1,29 +1,26 @@
 {% extends 'vault/base.html' %}
-
 {% block title %} Вход {% endblock title%}
-
 {% block content %}
-    <h1> Вход в систему </h1>
-    {% if error %}
-        <p class="errors">{{ error }}</p>
-    {% endif %}
+
+<h1 > Вход в систему </h1>
+        {% if error %}
+            <p class="errors">{{ error }}</p>
+        {% endif %}
 
     <form method="post">
         {% csrf_token %}
-
         <p>
-            <label for="id_username">Логин</label>
+            <label for="id_username" >Логин</label>
             <input type="text" name="username" id="id_username" required autofocus>
         </p>
-
         <p>
             <label for="id_password">Пароль</label>
             <input type="text" name="password" id="id_password" required autofocus>
         </p>
-
         <button class="btn" type="submit">Войти</button>
     </form>
     <p class="muted">
-        Нет Аккаунта? <a href="{% url 'register' %}">Зарегистрироваться</a>
+        <label>Нет Аккаунта?</label>
+        <a href="{% url 'register' %}">Зарегистрироваться</a>
     </p>
 {% endblock %}

@@ -15,7 +15,6 @@ class Account(models.Model):
     site = models.CharField("Сайт", max_length=255)
     login = models.CharField("Логин", max_length=255)
     password = models.CharField("Пароль", max_length=255)
-
     created_at = models.DateTimeField("Дата создания", auto_now_add=True)
     password_change_at = models.DateTimeField("Дата изменений пароля")
 

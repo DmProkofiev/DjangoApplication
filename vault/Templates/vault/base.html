@@ -1,5 +1,4 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -7,10 +6,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>{% block title %}Neon Password Generator{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    {% block extra_css %} {% endblock %}
+    {% block extra_css %}{% endblock %}
 </head>
 <body>
-    {% block content %}{% endblock %}
+    <div class="generator-card">
+        <div class="user-box">
+            {% if user.is_authenticated %}
+                <span > {{ user.username }} </span>
+                <a href="{% url 'account_list' %}" class="nav-link">Мои записи</a>
+                <a href="{% url 'logout' %}" class="nav-link logout-link">Выйти</a>
+            {% else %}
+                <a href="{% url 'login' %}" class="nav-link login-link">Войти</a>
+            {% endif %}
+        </div>
+        {% block content %}
+
+        {% endblock %}
+        <a href="{% url 'contact' %}" class="developer-link">
+                <div class="strength-info">Разработчик: Прокофьев Дмитрий Леонидович</div>
+        </a>
+         {% if request.resolver_match.url_name != 'home' %}
+            <a href="{% url 'home' %}" class="back-link">Главная страница</a>
+         {% endif %}
+
+    <footer>NEON Django</footer>
+    </div>
     {% block extra_js %}{% endblock %}
 </body>
 </html>

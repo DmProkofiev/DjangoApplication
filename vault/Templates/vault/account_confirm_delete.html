@@ -1,0 +1,24 @@
+{% extends 'vault/base.html' %}
+
+{% block title %}Удаление учетной записи{% endblock %}
+
+{% block content %}
+<div class="delete-card">
+    <h1>Удалить учетную запись?</h1>
+
+    <div class="delete-warning">
+        <p>Вы действительно хотите удалить запись для сайта:</p>
+        <p><strong>{{ account.site }}</strong> (логин: <em>{{ account.login }}</em>)?</p>
+        <p style="color: #ff2a6d;">Внимание! Это действие нельзя отменить.</p>
+    </div>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn-danger">Да, удалить</button>
+        <a href="{% url 'account_detail' pk=account.pk %}" class="btn-secondary">Отмена</a>
+    </form>
+
+    <a href="{% url 'account_list' %}" class="back-link">Назад к списку</a>
+    <footer>NEON Django</footer>
+</div>
+{% endblock %}

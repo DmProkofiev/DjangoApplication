@@ -1,16 +1,13 @@
 {% extends 'vault/base.html' %}
-
+{% load static %}
 {% block title %}О проекте{% endblock %}
 
 {% block content %}
-<div class="about-card">
-    <h1>О проекте</h1>
+<h1>О проекте</h1>
     <div class="content">
         <p><strong>Neon Password Generator</strong> - это учебный проект, созданный на Django.</p>
         <p>Генератор паролей с неоновой RGB-стилизацией.</p>
+        <img src="{% static 'img/fileImage1.jpg' %}" class="photo" alt="Прокофьев Дмитрий Леонидович">
+        <p>Данный веб-сайт может сгенерировать случайную комбинацию символов, вести учет хранения логина и пароля</p>
     </div>
-    <a href="{% url 'home' %}" class="back-link">← На главную</a>
-    <div class="strength-info">Разработчик: Прокофьев Дмитрий Леонидович</div>
-    <footer>NEON Django</footer>
-</div>
 {% endblock %}
